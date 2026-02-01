@@ -1,7 +1,10 @@
 package main.java.com.example;
-
+import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
+
+
 
 public class Calculator {
 
@@ -52,6 +55,8 @@ return a + b;
 }
 
 // EVEN WORSE: another SQL injection
+String password = System.getenv("DB_PASSWORD"); // or hardcoded for testing
+
 public void deleteUser(String username) throws Exception {
 Connection conn =
 DriverManager.getConnection("jdbc:mysql://localhost/db",
@@ -65,7 +70,13 @@ st.execute(query);
 public static void main(String[] args) throws Exception {
 Calculator calc = new Calculator();
 System.out.println(calc.calculate(10, 5, "add-again"));
-UserService service = new UserService();
+UserService service = new UserService(
+    
+);
+public void deleteUser(String username) {
+    // implement logic here (or stub)
+}
+
 service.findUser("admin");
 service.deleteUser("admin"); // NEW dangerous call
 }
