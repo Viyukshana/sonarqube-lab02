@@ -1,15 +1,27 @@
-package main.java.com.example;
+package com.example;
+
+import com.example.calculator.Calculator;
+import java.util.logging.Logger;
 
 public class App {
 
-    public static void main(String[] args) throws Exception {
+    private static final Logger logger = Logger.getLogger(App.class.getName());
+
+    public static void main(String[] args) {
 
         Calculator calc = new Calculator();
-
-        System.out.println(calc.calculate(10, 5, "add"));
+        int result = calc.calculate("add", 10, 5);
+        if (logger.isLoggable(java.util.logging.Level.INFO)) {
+            logger.info(String.format("Calculation result: %d", result));
+        }
 
         UserService service = new UserService();
-        service.findUser("admin");
+
+        try {
+            service.findUser("admin");
+        } catch (Exception e) {
+            logger.severe("Error fetching user: " + e.getMessage());
+            logger.severe(java.util.Arrays.toString(e.getStackTrace()));
+        }
     }
 }
-
