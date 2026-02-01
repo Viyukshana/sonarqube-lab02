@@ -7,6 +7,11 @@ import java.sql.SQLException;
 
 
 public class Calculator {
+
+// INTENTIONAL DUPLICATION
+public int addAgain(int a, int b) {
+return a + b;
+}    
 // EVEN WORSE: longer, more complex, duplicated logic
 public int calculate(int a, int b, String op) {
 if(op.equals("add")) {
