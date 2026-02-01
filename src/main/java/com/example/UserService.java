@@ -1,43 +1,38 @@
-package main.java.com.example;
+package com.example;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import java.util.logging.Logger;
 
 public class UserService {
 
-// EVEN WORSE: another SQL injection
-public void deleteUser(String username) throws Exception {
-Connection conn =
-DriverManager.getConnection("jdbc:mysql://localhost/db",
-"root", password);
-Statement st = conn.createStatement();
-String query =
-"DELETE FROM users WHERE name = '" + username + "'";
-st.execute(query);
-}
+    private static final Logger LOGGER = Logger.getLogger(UserService.class.getName());
 
+    // Use environment variables or config files instead of hardcoding
+    private static final String DB_URL = "jdbc:mysql://localhost/db";
+    private static final String DB_USER = "root";
+    private static final String DB_PASSWORD = System.getenv("DB_PASSWORD");
 
-    // SECURITY ISSUE: Hardcoded credentials
-    private String password = "admin123";
+    // Secure method using PreparedStatement
+    public void findUser(String username) throws SQLException {
 
-    // VULNERABILITY: SQL Injection
-    public void findUser(String username) throws Exception {
+        String query = "SELECT name FROM users WHERE name = ?";
 
-        Connection conn =
-            DriverManager.getConnection("jdbc:mysql://localhost/db",
-                    "root", password);
+        try (
+            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            PreparedStatement ps = conn.prepareStatement(query)
+        ) {
+            ps.setString(1, username);
 
-        Statement st = conn.createStatement();
-
-        String query =
-            "SELECT * FROM users WHERE name = '" + username + "'";
-
-        st.executeQuery(query);
-    }
-
-    // SMELL: Unused method
-    public void notUsed() {
-        System.out.println("I am never called");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    LOGGER.log(java.util.logging.Level.INFO, "User found: {0}", rs.getString("name"));
+                }
+            }
+        }
     }
 }

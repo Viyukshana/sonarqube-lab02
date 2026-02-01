@@ -1,46 +1,17 @@
-package main.java.com.example;
-import java.sql.Statement;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+package com.example.calculator;
 
-
+import java.util.function.IntBinaryOperator;
+import java.util.Map;
 
 public class Calculator {
+    private Map<String, IntBinaryOperator> operations = Map.of(
+        "add", (a, b) -> a + b,
+        "subtract", (a, b) -> a - b,
+        "multiply", (a, b) -> a * b,
+        "divide", (a, b) -> a / b
+    );
 
-// INTENTIONAL DUPLICATION
-public int addAgain(int a, int b) {
-return a + b;
-}    
-// EVEN WORSE: longer, more complex, duplicated logic
-public int calculate(int a, int b, String op) {
-if(op.equals("add")) {
-return a + b;
-} else if(op.equals("add-again")) {
-return a + b; // DUPLICATION
-} else if(op.equals("sub")) {
-return a - b;
-} else if(op.equals("sub-again")) {
-return a - b; // DUPLICATION
-} else if(op.equals("mul")) {
-return a * b;
-} else if(op.equals("div")) {
-if(b == 0) {
-return 0;
-} else {
-return a / b;
-}
-} else if(op.equals("mod")) {
-return a % b;
-} else if(op.equals("pow")) {
-int result = 1;
-for(int i = 0; i < b; i++) {
-result = result * a;
-}
-return result;
-} else {
-return 0;
-}
-}
-
+    public int calculate(String operation, int a, int b) {
+        return operations.get(operation).applyAsInt(a, b);
+    }
 }
