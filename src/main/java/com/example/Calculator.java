@@ -7,9 +7,7 @@ import java.sql.SQLException;
 
 
 public class Calculator {
-
-    // Code Smell: Long method + high complexity
-    // EVEN WORSE: longer, more complex, duplicated logic
+// EVEN WORSE: longer, more complex, duplicated logic
 public int calculate(int a, int b, String op) {
 if(op.equals("add")) {
 return a + b;
@@ -38,47 +36,6 @@ return result;
 } else {
 return 0;
 }
-}
-
-    // Code Duplication (students must remove)
-    public int addNumbers(int x, int y) {
-        return x + y;
-    }
-
-    public int sumValues(int a, int b) {
-        return a + b;
-    }
-
-// INTENTIONAL DUPLICATION
-public int addAgain(int a, int b) {
-return a + b;
-}
-
-// EVEN WORSE: another SQL injection
-String password = System.getenv("DB_PASSWORD"); // or hardcoded for testing
-
-public void deleteUser(String username) throws Exception {
-Connection conn =
-DriverManager.getConnection("jdbc:mysql://localhost/db",
-"root", password);
-Statement st = conn.createStatement();
-String query =
-"DELETE FROM users WHERE name = '" + username + "'";
-st.execute(query);
-}
-
-public static void main(String[] args) throws Exception {
-Calculator calc = new Calculator();
-System.out.println(calc.calculate(10, 5, "add-again"));
-UserService service = new UserService(
-    
-);
-public void deleteUser(String username) {
-    // implement logic here (or stub)
-}
-
-service.findUser("admin");
-service.deleteUser("admin"); // NEW dangerous call
 }
 
 }
